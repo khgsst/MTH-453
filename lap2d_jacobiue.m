@@ -1,4 +1,4 @@
-function [errv,errvh,errvk] = lap2d_jacobi(m,maxiter,tol)
+function [errv,errvh,ue] = lap2d_jacobi(m,maxiter)
 %=======================================================================
 % This code solves the Laplace problem using the Jacobi method on a 
 %  (m+2) x (m+2) grid with an m x m grid of unknowns and h = 1/(m+1)
@@ -74,6 +74,7 @@ unew = uhn;
 iter = 0;
 
 %define an error tolerance (for stopping criteria)
+tol=eps;
 
 %define the error to be some arbitrary large number > tol
 err = 1;
@@ -94,9 +95,6 @@ while (err > tol) && (iter <=maxiter)
 
   %compute the error between direct and iterative solutions 
   errvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
-
-  %compute the error between direct and exact solutions 
-  errvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
 end
 toc
 

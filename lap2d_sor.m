@@ -1,6 +1,6 @@
-function [errv,errvh,errvk] = lap2d_jacobi(m,maxiter,tol)
+function [errv,errvh,errvk] = lap2d_sor(m,maxiter,tol)
 %=======================================================================
-% This code solves the Laplace problem using the Jacobi method on a 
+% This code solves the Laplace problem using the SOR method on a 
 %  (m+2) x (m+2) grid with an m x m grid of unknowns and h = 1/(m+1)
 %
 % Inputs:
@@ -60,7 +60,7 @@ axis('tight')
 title('direct')
 
 
-%==============Jacobi Method================================ 
+%==============SOR Method================================ 
 % assign size to the iterative solution and let it contain all zeros 
 uhn=zeros(m+2);
 
@@ -74,6 +74,7 @@ unew = uhn;
 iter = 0;
 
 %define an error tolerance (for stopping criteria)
+tol=eps;
 
 %define the error to be some arbitrary large number > tol
 err = 1;
@@ -82,11 +83,10 @@ tic
 while (err > tol) && (iter <=maxiter)
   for j =2:(m+1)
     for i = 2:(m+1)
-      unew(i,j) = 0.25*(uhn(i-1,j)+uhn(i+1,j)+uhn(i,j-1)+uhn(i,j+1));
+      uhn(i,j) = uhn(i,j)+2*(0.25*(uhn(i-1,j)+uhn(i+1,j)+uhn(i,j-1)+uhn(i,j+1))-uhn(i,j))/(1+sin(pi*h));
     end 
   end
   iter = iter +1;
-  uhn = unew;
   
   %compute the infinity norm for the global error
   err = norm(reshape(ue-uhn,(m+2)^2,1),inf);
@@ -105,4 +105,4 @@ figure(1)
 subplot(3,1,3)
 surf(X,Y,uhn);
 axis('tight')
-title('Jacobi')
+title('SOR')
