@@ -1,4 +1,4 @@
-function [errv,errvh,errvk] = lap2d_jacobi(m,maxiter,tol)
+function [Jerrv,Jerrvh,Jerrvk] = lap2d_jacobi(m,maxiter,tol)
 %=======================================================================
 % This code solves the Laplace problem using the Jacobi method on a 
 %  (m+2) x (m+2) grid with an m x m grid of unknowns and h = 1/(m+1)
@@ -90,13 +90,13 @@ while (err > tol) && (iter <=maxiter)
   
   %compute the infinity norm for the global error
   err = norm(reshape(ue-uhn,(m+2)^2,1),inf);
-  errv(iter) = err;
+  Jerrv(iter) = err;
 
   %compute the error between direct and iterative solutions 
-  errvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
+  Jerrvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
 
   %compute the error between direct and exact solutions 
-  errvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
+  Jerrvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
 end
 toc
 

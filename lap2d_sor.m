@@ -1,4 +1,4 @@
-function [errv,errvh,errvk] = lap2d_sor(m,maxiter,tol)
+function [Serrv,Serrvh,Serrvk] = lap2d_sor(m,maxiter,tol)
 %=======================================================================
 % This code solves the Laplace problem using the SOR method on a 
 %  (m+2) x (m+2) grid with an m x m grid of unknowns and h = 1/(m+1)
@@ -74,7 +74,6 @@ unew = uhn;
 iter = 0;
 
 %define an error tolerance (for stopping criteria)
-tol=eps;
 
 %define the error to be some arbitrary large number > tol
 err = 1;
@@ -90,13 +89,13 @@ while (err > tol) && (iter <=maxiter)
   
   %compute the infinity norm for the global error
   err = norm(reshape(ue-uhn,(m+2)^2,1),inf);
-  errv(iter) = err;
+  Serrv(iter) = err;
 
   %compute the error between direct and iterative solutions 
-  errvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
+  Serrvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
 
   %compute the error between direct and exact solutions 
-  errvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
+  Serrvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
 end
 toc
 

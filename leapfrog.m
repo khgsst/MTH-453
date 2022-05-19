@@ -1,11 +1,13 @@
-function leapfrog(intervals,nu)
+function err=leapfrog(intervals,nu,omega)
 %intervals=20 => m = 19; nu=0.5; for example
 %note that MATLAB does not allow index 0, so u=[u(1),...,u(m+2)];
   
   
 % parameters
+if nargin < 3
+  omega = 2;
+end
 m=intervals-1;
-omega = 2;
 h = 2*pi/(m+1);
 k = nu*h;
 T = 1;
@@ -37,7 +39,7 @@ for n=2:nsteps
 end
 
 % plot results at t=T
-plot(x,u2,'m')
+plot(x,u2,'-*')
 xlabel('x')
 ylabel('u')
 axis([-pi pi -1.1 1.1])
@@ -45,4 +47,7 @@ title('Leap-frog scheme')
 
 % maximum Error at t = T
 ue = sin (omega * (x + k*nsteps));% exact solution at t=T
-err = max(abs(u2-ue))
+hold on
+plot(x,ue,'--k')
+hold off
+err = max(abs(u2-ue));

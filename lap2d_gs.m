@@ -1,4 +1,4 @@
-function [errv,errvh,errvk] = lap2d_gs(m,maxiter,tol)
+function [Gerrv,Gerrvh,Gerrvk] = lap2d_gs(m,maxiter,tol)
 %=======================================================================
 % This code solves the Laplace problem using the Gauss-Seidel method on a 
 %  (m+2) x (m+2) grid with an m x m grid of unknowns and h = 1/(m+1)
@@ -73,9 +73,6 @@ unew = uhn;
 %counter for number of iterations
 iter = 0;
 
-%define an error tolerance (for stopping criteria)
-tol=eps;
-
 %define the error to be some arbitrary large number > tol
 err = 1;
 
@@ -90,13 +87,13 @@ while (err > tol) && (iter <=maxiter)
   
   %compute the infinity norm for the global error
   err = norm(reshape(ue-uhn,(m+2)^2,1),inf);
-  errv(iter) = err;
+  Gerrv(iter) = err;
 
   %compute the error between direct and iterative solutions 
-  errvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
+  Gerrvh(iter) = norm(reshape(uhs-uhn,(m+2)^2,1),inf);
 
   %compute the error between direct and exact solutions 
-  errvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
+  Gerrvk(iter) = norm(reshape(uhs-ue,(m+2)^2,1),inf);
 end
 toc
 
